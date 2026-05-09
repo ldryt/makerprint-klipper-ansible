@@ -18,18 +18,6 @@
     mode: 0755
   loop: "{{ printers | product(['config', 'logs', 'comms', 'gcodes']) | list }}"
 
-- name: Configure klipper instances
-  include_tasks:
-    file: ./config.yml
-    apply:
-      tags:
-        - klipper_cfg
-  loop: "{{ printers }}"
-  loop_control:
-    loop_var: printer
-  tags:
-    - 'klipper_cfg'
-
 - name: Create udev rules for printer
   become: true
   template:
@@ -45,6 +33,20 @@
     dest: /etc/systemd/system/klipper@.service
     mode: 0644
   notify: reload systemd
+
+- meta: flush_handlers
+
+- name: Configure klipper instances
+  include_tasks:
+    file: ./config.yml
+    apply:
+      tags:
+        - klipper_cfg
+  loop: "{{ printers }}"
+  loop_control:
+    loop_var: printer
+  tags:
+    - 'klipper_cfg'
 
 - name: Enable and start klipper service for printer
   become: true
