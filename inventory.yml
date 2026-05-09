@@ -8,7 +8,7 @@ all:
           usb_port: 1-1.2.4.4
           moonraker:
             port: 7125
-        - name: sidewinder_2
+        - name: sidewinder_3
           model: sidewinder_x1
           usb_port: 1-1.2.4.2
           moonraker:
