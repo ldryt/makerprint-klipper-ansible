@@ -1,4 +1,26 @@
 ---
+# - name: Clone mainsail repository
+#   git:
+#     repo: "{{ mainsail_repo }}"
+#     dest: "{{ install_dir }}/mainsail"
+#     version: "{{ mainsail_version }}"
+#     force: yes
+
+# - name: Apply patch hostname
+#   patch:
+#     src: hostname.patch
+#     basedir: "{{ install_dir }}/mainsail"
+#     strip: 1
+
+# - name: Install npm dependencies
+#   npm:
+#     path: "{{ install_dir }}/mainsail"
+
+# - name: Build mainsail
+#   command: npm run build
+#   args:
+#     chdir: "{{ install_dir }}/mainsail"
+
 - name: Create mainsail www folder
   become: true
   file:
@@ -7,12 +29,16 @@
     owner: "{{ system_user }}"
     group: www-data
 
-- name: Fetch mainsail git repository
+# - name: Copy mainsail files to www dir
+#   copy:
+#     remote_src: yes
+#     src: "{{ install_dir }}/mainsail/dist/"
+#     dest: "{{ mainsail_www_dir }}"
+
+- name: Copy mainsail files to www dir
   unarchive:
-    src: "{{ mainsail_url }}"
+    src: "mainsail.zip"
     dest: "{{ mainsail_www_dir }}"
-    remote_src: yes
-    creates: "{{ mainsail_www_dir }}/index.html"
 
 - name: Copy Mainsail config.json
   template:

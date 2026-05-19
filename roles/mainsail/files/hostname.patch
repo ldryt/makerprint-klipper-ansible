@@ -1,0 +1,26 @@
+diff --git a/src/store/actions.ts b/src/store/actions.ts
+index 05ddc62d..b6c6ef10 100644
+--- a/src/store/actions.ts
++++ b/src/store/actions.ts
+@@ -45,7 +45,7 @@ export const actions: ActionTree<RootState, RootState> = {
+                 Array.isArray(payload.instances) &&
+                 payload.instances.length
+             ) {
+-                commit('setConfigInstances', payload.instances)
++                commit('setConfigInstances', payload.instances.map((i) => ({ ...i, hostname: i.hostname ?? window.location.hostname })))
+             }
+
+             return
+diff --git a/src/store/types.ts b/src/store/types.ts
+index 11cdd6d2..5252a682 100644
+--- a/src/store/types.ts
++++ b/src/store/types.ts
+@@ -34,7 +34,7 @@ export interface ConfigJson {
+ }
+
+ export interface ConfigJsonInstance {
+-    hostname: string
++    hostname: string | null
+     port?: number
+     path?: string
+ }
